@@ -5,14 +5,7 @@ const Quiz = require("../models/Quiz");
 const Result = require("../models/Result");
 
 // GET all quizzes
-router.get("/", async (req, res) => {
-  try {
-    const quizzes = await Quiz.find();
-    res.json(quizzes);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+
 router.get("/", async (req, res) => {
   console.log("🔥 /api/quiz route hit");
 
