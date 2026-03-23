@@ -13,7 +13,19 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+router.get("/", async (req, res) => {
+  console.log("🔥 /api/quiz route hit");
 
+  try {
+    const quizzes = await Quiz.find();
+    console.log("DATA:", quizzes);
+
+    res.json(quizzes);
+  } catch (err) {
+    console.log("ERROR:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
 // CREATE quiz
 router.post("/create", async (req, res) => {
   try {
