@@ -1,37 +1,55 @@
-const router = require('express').Router();
-const Quiz = require('../models/Quiz');
+const express = require("express");
+const router = express.Router();
 
-// Create Quiz
-router.post('/create', async (req, res) => {
-  const quiz = new Quiz(req.body);
-  await quiz.save();
-  res.json(quiz);
+const Quiz = require("../models/Quiz");
+const Result = require("../models/Result");
+
+// GET all quizzes
+router.get("/", async (req, res) => {
+  try {
+    const quizzes = await Quiz.find();
+    res.json(quizzes);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-// Get all quizzes
-router.get('/', async (req, res) => {
-  const quizzes = await Quiz.find();
-  res.json(quizzes);
+// CREATE quiz
+router.post("/create", async (req, res) => {
+  try {
+    const quiz = new Quiz(req.body);
+    await quiz.save();
+    res.json(quiz);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-// Get single quiz
-router.get('/:id', async (req, res) => {
-  const quiz = await Quiz.findById(req.params.id);
-  res.json(quiz);
-});
+// SUBMIT quiz
+router.post("/submit/:id", async (req, res) => {
+  try {
+    const quiz = await Quiz.findById(req.params.id);
+    const { answers, username } = req.body;
 
-// Submit quiz
-router.post('/submit/:id', async (req, res) => {
-  const quiz = await Quiz.findById(req.params.id);
-  let score = 0;
+    let score = 0;
 
-  req.body.answers.forEach((ans, index) => {
-    if (ans === quiz.questions[index].correctAnswer) {
-      score++;
-    }
-  });
+    quiz.questions.forEach((q, i) => {
+      if (q.correctAnswer === answers[i]) {
+        score++;
+      }
+    });
 
-  res.json({ score, total: quiz.questions.length });
+    await Result.create({
+      username: username || "Anonymous",
+      quizId: quiz._id,
+      score,
+      total: quiz.questions.length
+    });
+
+    res.json({ score, total: quiz.questions.length });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 module.exports = router;
