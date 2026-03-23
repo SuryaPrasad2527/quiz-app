@@ -21,13 +21,8 @@ mongoose.connect(process.env.MONGO_URI)
 app.get('/', (req, res) => {
   res.send("API Running 🚀");
 });
-
 app.use("/api/quiz", quizRoutes);
 // 🟢 GET all quizzes
-app.get('/api/quiz', async (req, res) => {
-  const quizzes = await Quiz.find();
-  res.json(quizzes);
-});
 
 // 🟢 CREATE quiz
 app.post('/api/quiz/create', async (req, res) => {
@@ -65,4 +60,6 @@ app.get('/api/results/:quizId', async (req, res) => {
   res.json(results);
 });
 
-app.listen(5000, () => console.log("Server running on port 5000"));
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => console.log("Server running on port " + PORT));
