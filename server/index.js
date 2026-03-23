@@ -11,10 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 // ✅ MongoDB Atlas Connection
-<<<<<<< HEAD
 
-=======
->>>>>>> 0f1d4a4 (fix backend package.json)
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
