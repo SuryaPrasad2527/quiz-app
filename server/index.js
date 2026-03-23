@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const quizRoutes = require("./routes/quiz");
 
 const Quiz = require('./models/Quiz');
 const Result = require('./models/Result');
@@ -21,6 +22,7 @@ app.get('/', (req, res) => {
   res.send("API Running 🚀");
 });
 
+app.use("/api/quiz", quizRoutes);
 // 🟢 GET all quizzes
 app.get('/api/quiz', async (req, res) => {
   const quizzes = await Quiz.find();
