@@ -11,7 +11,8 @@ app.use(cors());
 app.use(express.json());
 
 // ✅ MongoDB Atlas Connection
-mongoose.connect("mongodb+srv://Surya:YOUR_PASSWORD@cluster0.razu9jm.mongodb.net/quiz-app?retryWrites=true&w=majority")
+
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
