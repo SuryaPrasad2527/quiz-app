@@ -17,8 +17,8 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.log(err));
 
 // Test route
-app.get('/', (req, res) => {
-  res.send("API Running 🚀");
+app.get("/", (req, res) => {
+  res.send("MY SERVER IS RUNNING ✅");
 });
 
 // Quiz routes (handles GET, CREATE, SUBMIT)
